@@ -74,7 +74,6 @@ const loadChatRooms = async () => {
   }
 };
 
-
   // ✅ 최초 로딩
   useEffect(() => {
     loadChatRooms();

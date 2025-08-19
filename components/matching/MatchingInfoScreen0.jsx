@@ -15,7 +15,6 @@ import { submitMatchingProfile } from '../../api/matching';
 import { REGION_MAP } from '../common/regionMap';
 import HeaderBar from '../../components/common/HeaderBar';
 import { UIManager } from 'react-native';
-import MultiRegionSelector from '../matching/common/MultiRegionSelector';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const BASE_WIDTH = 390;
@@ -34,8 +33,8 @@ export default function MatchingInfoScreen() {
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [selectedProvinces, setSelectedProvinces] = useState([]);
-  const [selectedCities, setSelectedCities] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
   const [selectedItems, setSelectedItems] = useState({
     group: '', tripstyle: [], gender: '', age: '',
   });
@@ -235,11 +234,11 @@ export default function MatchingInfoScreen() {
         {/* 👇 아코디언 카드 영역 + 참조 저장 + 토글 핸들러 전달 */}
         {[
           { key: 'region', title: "이번 여행, 어디로 떠나시나요?", content:
-            <MultiRegionSelector
-              selectedProvinces={selectedProvinces}
-              selectedCities={selectedCities}
-              onProvincesChange={setSelectedProvinces}
-              onCitiesChange={setSelectedCities}
+            <RegionSelector
+              selectedProvince={selectedProvince}
+              selectedCity={selectedCity}
+              onProvinceChange={setSelectedProvince}
+              onCityChange={setSelectedCity}
             />,
             contentStyle: { marginTop: 6 },
           },

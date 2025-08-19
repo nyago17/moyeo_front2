@@ -1,48 +1,26 @@
-// components/community/common/CommentSection.jsx 댓글 영역역
-// 커뮤니티 게시글 -상세보기- 댓글 
-import React, { useState, useEffect, useRef,forwardRef, useImperativeHandle, } from 'react';
+// components/community/common/CommentSection.jsx
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import {
-  View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Dimensions, KeyboardAvoidingView, Platform, FlatList,
-ScrollView, Modal, Alert, RefreshControl } from 'react-native';
+  View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Dimensions,
+  KeyboardAvoidingView, Platform, FlatList, Modal, Alert, RefreshControl
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getCommentList, createComment, editComment, deleteComment } from '../../../api/community'; 
+import { getCommentList, createComment, editComment, deleteComment } from '../../../api/community';
 import { MaterialIcons } from '@expo/vector-icons';
+import { InteractionManager } from 'react-native';
 
-
-// 반응형 함수
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const BASE_WIDTH = 390;
 const BASE_HEIGHT = 844;
 const scale = (size) => (SCREEN_WIDTH / BASE_WIDTH) * size;
 const vScale = (size) => (SCREEN_HEIGHT / BASE_HEIGHT) * size;
 
-// ✅ mock 데이터 (더미 댓글)
-const mockCommentList = [
-  {
-    id: 101,
-    nickname: '도리',
-    content: '돌아버린거냐 저건 카레가 아니잖아',
-    profileUrl: 'https://placehold.co/36x36',
-    createdDate: '15분 전',
-    isMine: false,
-  },
-  {
-    id: 102,
-    nickname: '카레홀릭',
-    content: '맛있어요~',
-    profileUrl: 'https://placehold.co/36x36',
-    createdDate: '8분 전',
-    isMine: true,
-  },
-];
-
-export default function CommentSection({ postId, myNickname = '', comments: propComments, setComments: setPropComments }, ref) {
+const CommentSection = forwardRef(({ postId, myNickname = '', comments: propComments, setComments: setPropComments }, ref) => {
   const [input, setInput] = useState('');
-  const [editId, setEditId] = useState(null); // 기존 입력란 수정
-  const [editContent, setEditContent] = useState(''); // 댓글 직접 수정
+  const [editId, setEditId] = useState(null);
+  const [editContent, setEditContent] = useState('');
   const [token, setToken] = useState('');
-  const [inputHeight, setInputHeight] = useState(vScale(31)); // 댓글 입력창 기본 높이
-  //  댓글 최대/최소 높이 (5줄 기준, 반응형)
+  const [inputHeight, setInputHeight] = useState(vScale(31));
   const minHeight = vScale(31);
   const maxHeight = vScale(31) * 5;
   const [openMenuId, setOpenMenuId] = useState(null);
@@ -55,7 +33,31 @@ export default function CommentSection({ postId, myNickname = '', comments: prop
   const comments = propComments ?? commentsState;
   const setComments = setPropComments ?? setCommentsState;
 
-    useEffect(() => {
+  const onAddComment = async () => {
+  // 댓글 등록 로직 (서버 요청 등)
+  await saveCommentToServer(newComment);
+
+  // 댓글 상태 업데이트 (comments 배열에 추가)
+  setComments(prev => [...prev, newComment]);
+
+  // 잠깐 딜레이 후 스크롤 이동
+  setTimeout(() => {
+    const itemHeight = vScale(100); // getItemLayout에서 사용하는 높이
+    const offset = comments.length * itemHeight;
+    flatListRef.current?.scrollToOffset({ offset, animated: true });
+  }, 100);
+};
+useEffect(() => {
+  if (comments.length === 0) return;
+
+  const itemHeight = vScale(100);
+  const offset = comments.length * itemHeight;
+  setTimeout(() => {
+    flatListRef.current?.scrollToOffset({ offset, animated: true });
+  }, 100);
+}, [comments]);
+
+  useEffect(() => {
     if (token && postId && myNickname) {
       getCommentList(postId, token)
         .then(commentData => {
@@ -69,39 +71,31 @@ export default function CommentSection({ postId, myNickname = '', comments: prop
               isMine: item.nickname === myNickname,
             }))
           );
-          console.log('[초기 진입] 댓글 리스트 갱신', commentData);
         })
-        .catch(error => {
-          console.error('[초기 진입] 댓글 리스트 불러오기 실패:', error);
-        });
+        .catch(error => console.error('[초기 진입] 댓글 리스트 불러오기 실패:', error));
     }
   }, [token, postId, myNickname]);
 
-
-  // 새로고침 핸들러
   const handleRefresh = async () => {
-  setRefreshing(true);
-  try {
-    await fetchComments();
-  } finally {
-    setRefreshing(false);
-  }
-};
+    setRefreshing(true);
+    try {
+      await fetchComments();
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
-
-   // 1. 토큰 로드
   useEffect(() => {
     AsyncStorage.getItem('jwt').then(value => {
       if (value) setToken(value);
     });
   }, []);
-  
-  // 2. 댓글 리스트 조회
+
   const fetchComments = async () => {
     try {
       const data = await getCommentList(postId, token);
       setComments(
-        data.map((item) => ({
+        data.map(item => ({
           nickname: item.nickname,
           content: item.comment,
           profileUrl: item.userProfile,
@@ -114,103 +108,89 @@ export default function CommentSection({ postId, myNickname = '', comments: prop
       alert('댓글 불러오기 실패');
     }
   };
-    // 새로고침 정보 게시글 상세로 보내기
-    useImperativeHandle(ref, () => ({
-      refreshComments: fetchComments,
-    }));
 
-    // 받아온 타임스탬프에 +9시간 더하기 (utc에서 변환)
-    function toKoreanDate(dateString) {
+  useImperativeHandle(ref, () => ({ refreshComments: fetchComments }));
+
+  function toKoreanDate(dateString) {
     if (!dateString) return null;
     const date = new Date(dateString);
-    // UTC → KST (+9시간)
     return new Date(date.getTime() + 9 * 60 * 60 * 1000);
   }
 
-    function getRelativeTime(isoString) {
-  if (!isoString) return '';
-  const now = new Date();
-  // ✅ KST로 보정한 값으로 차이 계산
-  const past = toKoreanDate(isoString);
-  const diff = (now.getTime() - past.getTime()) / 1000;
+  function getRelativeTime(isoString) {
+    if (!isoString) return '';
+    const now = new Date();
+    const past = toKoreanDate(isoString);
+    const diff = (now.getTime() - past.getTime()) / 1000;
 
-  if (diff < 60) return '방금 전';
-  if (diff < 3600) return `${Math.floor(diff / 60)}분 전`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)}시간 전`;
-  if (diff < 2592000) return `${Math.floor(diff / 86400)}일 전`;
-  if (diff < 31536000) return `${Math.floor(diff / 2592000)}달 전`;
-  return `${Math.floor(diff / 31536000)}년 전`;
-}
+    if (diff < 60) return '방금 전';
+    if (diff < 3600) return `${Math.floor(diff / 60)}분 전`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}시간 전`;
+    if (diff < 2592000) return `${Math.floor(diff / 86400)}일 전`;
+    if (diff < 31536000) return `${Math.floor(diff / 2592000)}달 전`;
+    return `${Math.floor(diff / 31536000)}년 전`;
+  }
 
-  // 화면 진입/댓글 CRUD 후 목록 새로고침
   useEffect(() => {
-    if (propComments) return; // props로 comments가 오면 내부 fetchComments 호출 안함
+    if (propComments) return;
     if (!token || !postId) return;
     fetchComments();
   }, [token, postId, propComments]);
 
-  // 3. 댓글 등록/수정
   const handleSubmit = async () => {
-    if (!input.trim()) return;
-    try {
-      if (editId) {
-        await editComment(editId, input, token);
-        setEditId(null);
-      } else {
-        await createComment(postId, input, token);
-      }
-      setInput('');
-      await fetchComments();
-      setTimeout(() => {
-        flatListRef.current?.scrollToEnd({ animated: true });
-        inputRef.current?.focus();
-      }, 220);
-    } catch (e) {
-      alert('댓글 등록/수정 실패');
+  if (!input.trim()) return;
+  try {
+    if (editId) {
+      await editComment(editId, input, token);
+      setEditId(null);
+    } else {
+      await createComment(postId, input, token);
     }
-  };
+    setInput('');
+    await fetchComments();
 
-  // 4. 삭제 버튼 (mock/실제 분기 + 주석/로그)
+    // 댓글 리스트 렌더링 후 스크롤 내리기 (딜레이로 렌더링 기다림)
+    setTimeout(() => {
+      const itemHeight = vScale(100);
+      const offset = comments.length * itemHeight;
+      flatListRef.current?.scrollToOffset({ offset, animated: true });
+      inputRef.current?.focus();
+    }, 200);
+  } catch (e) {
+    alert('댓글 등록/수정 실패');
+  }
+};
+
   const handleDelete = async (id) => {
-    Alert.alert(
-      "댓글 삭제",
-      "댓글을 삭제하시겠습니까?",
-      [
-        { text: "아니오", style: "cancel" },
-        {
-          text: "네",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await deleteComment(id, token);
-              await fetchComments();
-            } catch (e) {
-              alert('댓글 삭제 실패');
-            }
+    Alert.alert("댓글 삭제", "댓글을 삭제하시겠습니까?", [
+      { text: "아니오", style: "cancel" },
+      {
+        text: "네",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await deleteComment(id, token);
+            await fetchComments();
+          } catch (e) {
+            alert('댓글 삭제 실패');
           }
         }
-      ]
-    );
+      }
+    ]);
   };
 
-  // 5. 수정 버튼
   const handleEdit = (id, content) => {
     setEditId(id);
     setEditContent(content);
     setTimeout(() => {
       const idx = comments.findIndex(c => c.id === id);
       if (idx >= 0 && flatListRef.current) {
-        flatListRef.current.scrollToIndex({
-          index: idx,
-          animated: true,
-          viewPosition: 0.6  // 0.5: 중앙, 0.6~0.7: 하단 부근
-        });
+        flatListRef.current.scrollToIndex({ index: idx, animated: true, viewPosition: 0.6 });
       }
-      editInputRefs.current[id]?.focus && editInputRefs.current[id].focus();
+      editInputRefs.current[id]?.focus?.();
     }, 400);
   };
 
-  //(3) 댓글 수정  저장 함수 추가
   const handleInlineEditSubmit = async (id) => {
     if (!editContent.trim()) return;
     try {
@@ -224,26 +204,26 @@ export default function CommentSection({ postId, myNickname = '', comments: prop
   };
 
   const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
-  const moreBtnRefs = useRef({}); // 각 댓글별 ref 저장(댓글 모달 높이 )
+  const moreBtnRefs = useRef({});
 
-  // 댓글 랜더 (1개)
-  const renderItem = ({ item }) => (
-  <View style={styles.commentRow}>
-    {/* 첫 줄: 프로필 + 닉네임 + (오른쪽) 시간 + 더보기 */}
-    <View style={styles.topRow}>
-      <Image source={{ uri: item.profileUrl }} style={styles.profileImg} />
-      <Text style={styles.nickname}>{item.nickname}</Text>
-      <View style={styles.flexSpacer} />
-      <View style={styles.timeAndMenuCol}>
-        <Text style={styles.time}>{item.createdDate}</Text>
-        {item.isMine && (
-          <>
+  const renderItem = ({ item }) => {
+    if (!moreBtnRefs.current[item.id]) {
+      moreBtnRefs.current[item.id] = React.createRef();
+    }
+
+    return (
+      <View style={styles.commentRow}>
+        <View style={styles.topRow}>
+          <Image source={{ uri: item.profileUrl }} style={styles.profileImg} />
+          <Text style={styles.nickname}>{item.nickname}</Text>
+          <View style={styles.flexSpacer} />
+          <View ref={moreBtnRefs.current[item.id]}>
             <TouchableOpacity
-              ref={ref => { moreBtnRefs.current[item.id] = ref; }} // 댓글 모달창 위치 계산산
               style={styles.moreBtn}
               onPress={() => {
-                moreBtnRefs.current[item.id].measure((fx, fy, width, height, px, py) => {
-                  setMenuPosition({ top: py + height - scale(25), right: scale(16) }); // px, py는 스크린 기준!
+                const ref = moreBtnRefs.current[item.id].current;
+                ref?.measure((fx, fy, width, height, px, py) => {
+                  setMenuPosition({ top: py + height - scale(25), right: scale(16) });
                   setOpenMenuId(openMenuId === item.id ? null : item.id);
                 });
               }}
@@ -251,126 +231,67 @@ export default function CommentSection({ postId, myNickname = '', comments: prop
             >
               <MaterialIcons name="more-horiz" size={scale(22)} color="#7E7E7E" />
             </TouchableOpacity>
- {/* ---------- (수정) 댓글 더보기 메뉴 Modal로 변경 시작 ---------- */}
-            <Modal
-              visible={openMenuId === item.id}
-              transparent
-              animationType="fade"
-              onRequestClose={() => setOpenMenuId(null)}
-            >
-              <TouchableOpacity
-                style={styles.modalBackdrop}
-                activeOpacity={1}
-                onPress={() => setOpenMenuId(null)}
-              >
-                <View style={[
-                  styles.modalMenuBox,
-                  {
-                    position: 'absolute',
-                    top: menuPosition.top,
-                    right: menuPosition.right,
-                  }
-                ]}>
-                  <TouchableOpacity
-                    style={styles.menuEdit}
-                    onPress={() => { setOpenMenuId(null); handleEdit(item.id, item.content); }}
-                    activeOpacity={0.85}
-                  >
-                    <Text style={[styles.menuText, { color: '#4F46E5' }]}>수정</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.menuDelete}
-                    onPress={() => { setOpenMenuId(null); handleDelete(item.id); }}
-                    activeOpacity={0.85}
-                  >
-                    <Text style={[styles.menuText, { color: '#F97575' }]}>삭제</Text>
-                  </TouchableOpacity>
-                </View>
+          </View>
+        </View>
+
+        <Modal visible={openMenuId === item.id} transparent animationType="fade" onRequestClose={() => setOpenMenuId(null)}>
+          <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setOpenMenuId(null)}>
+            <View style={[styles.modalMenuBox, { top: menuPosition.top, right: menuPosition.right }]}>
+              <TouchableOpacity style={styles.menuEdit} onPress={() => { setOpenMenuId(null); handleEdit(item.id, item.content); }} activeOpacity={0.85}>
+                <Text style={[styles.menuText, { color: '#4F46E5' }]}>수정</Text>
               </TouchableOpacity>
-            </Modal>
-            {/* ---------- (수정) 댓글 더보기 메뉴 Modal로 변경 끝 ---------- */}
-          </>
-        )}
-      </View>
-    </View>
-    {/* 두 번째 줄: 댓글 본문 */}
-    <View style={styles.commentContentWrap}>
-        {editId === item.id ? (
-      <View style={{ flex: 1 }}>
-        <TextInput
-          ref={ref => { editInputRefs.current[item.id] = ref; }}
-          value={editContent}
-          onChangeText={setEditContent}
-          style={[styles.commentContent, { backgroundColor: '#ffffff', minHeight: 34 }]}
-          multiline
-          autoFocus
-          maxLength={200}
-        />
-        {/* 버튼 우측정렬 */}
-        <View style={{ flexDirection: 'row', marginTop: 6, justifyContent: 'flex-end', alignItems: 'center' }}>
-          <TouchableOpacity
-            style={{ marginRight: 12, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, backgroundColor: '#FFF' }}
-            onPress={() => handleInlineEditSubmit(item.id)}
-          >
-            <Text style={{ color: '#4F46E5', fontWeight: 'bold', fontSize: 13 }}>수정</Text>
+              <TouchableOpacity style={styles.menuDelete} onPress={() => { setOpenMenuId(null); handleDelete(item.id); }} activeOpacity={0.85}>
+                <Text style={[styles.menuText, { color: '#F97575' }]}>삭제</Text>
+              </TouchableOpacity>
+            </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={{ marginRight: scale(6) ,paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, backgroundColor: '#FAFAFA' }}
-            onPress={() => {
-              setEditId(null);
-              setEditContent('');
-            }}
-          >
-            <Text style={{ color: '#333', fontSize: 13 }}>취소</Text>
-          </TouchableOpacity>
+        </Modal>
+
+        <View style={styles.commentContentWrap}>
+          {editId === item.id ? (
+            <View style={{ flex: 1 }}>
+              <TextInput
+                ref={ref => { editInputRefs.current[item.id] = ref; }}
+                value={editContent}
+                onChangeText={setEditContent}
+                style={[styles.commentContent, { backgroundColor: '#ffffff', minHeight: 34 }]}
+                multiline
+                autoFocus
+                maxLength={200}
+              />
+              <View style={{ flexDirection: 'row', marginTop: 6, justifyContent: 'flex-end', alignItems: 'center' }}>
+                <TouchableOpacity style={{ marginRight: 12, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, backgroundColor: '#FFF' }} onPress={() => handleInlineEditSubmit(item.id)}>
+                  <Text style={{ color: '#4F46E5', fontWeight: 'bold', fontSize: 13 }}>수정</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ marginRight: scale(6), paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, backgroundColor: '#FAFAFA' }} onPress={() => { setEditId(null); setEditContent(''); }}>
+                  <Text style={{ color: '#333', fontSize: 13 }}>취소</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : (
+            <Text style={styles.commentContent}>{item.content}</Text>
+          )}
         </View>
       </View>
-    ) : (
-      <Text style={styles.commentContent}>{item.content}</Text>
-    )}
-  </View>
-  </View>
-);
+    );
+  };
 
   return (
-    // 전체를 flex:1 View로 감싼다
     <View style={{ flex: 1 }}>
-      {/* 댓글 리스트 */}
       <FlatList
         ref={flatListRef}
         data={comments}
         renderItem={renderItem}
         keyExtractor={(item, idx) => (item.id ?? idx).toString()}
-        getItemLayout={(data, index) => ({
-          length: vScale(100),
-          offset: vScale(100) * index,
-          index,
-        })}
-        contentContainerStyle={{
-          paddingBottom: vScale(100),
-          paddingTop: vScale(8),
-        }}
-        ListEmptyComponent={
-          <View style={{ paddingBottom: vScale(120) }}>
-            <Text style={styles.emptyText}>아직 작성된 댓글이 없어요</Text>
-          </View>
-        }
-        keyboardShouldPersistTaps="always"
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={handleRefresh}
-            tintColor="#4F46E5"
-            colors={['#4F46E5']}
-          />
-        }
+        getItemLayout={(data, index) => ({ length: vScale(100), offset: vScale(100) * index, index })}
+        contentContainerStyle={{ paddingBottom: vScale(10), paddingTop: vScale(8) }}
+        ListEmptyComponent={<View style={{ paddingBottom: vScale(120) }}><Text style={styles.emptyText}>아직 작성된 댓글이 없어요</Text></View>}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor="#4F46E5" colors={['#4F46E5']} />}
+        removeClippedSubviews={false} // 키보드 바로닫힘
       />
-
-      {/* 하단 입력창만 KeyboardAvoidingView로 분리 */}
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0} // iOS는 필요에 따라 조정 (60~120)
-      >
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} keyboardVerticalOffset={Platform.OS === 'ios' ? 120 : 0}>
         <View style={styles.inputRow}>
           <TextInput
             ref={inputRef}
@@ -379,40 +300,35 @@ export default function CommentSection({ postId, myNickname = '', comments: prop
             onChangeText={setInput}
             maxLength={200}
             editable={editId === null}
-            style={[
-              styles.input,
-              { 
-                height: Math.max(minHeight, Math.min(inputHeight, maxHeight)),
-                fontSize: scale(14),
-                backgroundColor: editId === null ? '#FFF' : '#fff',
-                color: editId === null ? '#000' : '#B0B0B0',
-              }
-            ]}
+            style={[styles.input, {
+              height: Math.max(minHeight, Math.min(inputHeight, maxHeight)),
+              fontSize: scale(14),
+              backgroundColor: editId === null ? '#FFF' : '#fff',
+              color: editId === null ? '#000' : '#B0B0B0'
+            }]}
             placeholderTextColor="#7E7E7E"
             multiline
             onContentSizeChange={e => setInputHeight(e.nativeEvent.contentSize.height)}
             textAlignVertical="center"
             returnKeyType="default"
             onFocus={() => {
-              if (comments.length > 0 && flatListRef.current?.scrollToIndex) {
-                setTimeout(() => {
-                  flatListRef.current.scrollToIndex({
-                    index: comments.length - 1,
-                    animated: true,
-                    viewPosition: 0.6
-                  });
-                }, 200);
-              }
-            }}
+  console.log('TextInput focused');
+
+  setTimeout(() => {
+    if (flatListRef.current && typeof flatListRef.current.scrollToEnd === 'function') {
+      flatListRef.current.scrollToEnd({ animated: true });
+      console.log('Scrolled to end');
+    } else {
+      console.warn('scrollToEnd method not found on flatListRef');
+    }
+  }, 100); // 약간 딜레이를 두어 렌더링 후 호출
+}}
           />
           <TouchableOpacity
-            style={[
-              styles.submitBtn,
-              { 
-                backgroundColor: input.trim() && editId === null ? '#FFFFFF' : '#FAFAFA',
-                opacity: editId === null ? 1 : 0.5,
-              }
-            ]}
+            style={[styles.submitBtn, {
+              backgroundColor: input.trim() && editId === null ? '#FFFFFF' : '#FAFAFA',
+              opacity: editId === null ? 1 : 0.5
+            }]}
             onPress={handleSubmit}
             disabled={!input.trim() || editId !== null}
           >
@@ -420,10 +336,11 @@ export default function CommentSection({ postId, myNickname = '', comments: prop
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-
-  </View>
+    </View>
   );
-}
+});
+
+export default CommentSection;
 
 // 이 코드를 CommentSection.jsx 맨 아래(마지막 줄 근처)에 붙여넣으세요
 
