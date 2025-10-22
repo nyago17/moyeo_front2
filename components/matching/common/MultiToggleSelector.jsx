@@ -36,7 +36,8 @@ export default function MultiToggleSelector({
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollView}>
       {items.map((item) => {
-        const isSelected = selectedItems.includes(item);
+        const isSelected =
+          selectedItems.includes(item) || (item === '선택없음' && selectedItems.length === 0);
         const isDisabled =
           noneSelected && item !== '선택없음'; // "선택없음" 선택시 나머지 모두 disabled
 

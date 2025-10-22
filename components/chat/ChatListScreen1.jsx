@@ -1,9 +1,6 @@
 // components/chat/ChatListScreen.jsx
 // 신버전 UI + 구버전 기능 이식
 // 필드명 리네이밍 금지 (API 응답 그대로 사용)
-// components/chat/ChatListScreen.jsx
-// 신버전 UI + 구버전 기능 이식
-// 필드명 리네이밍 금지 (API 응답 그대로 사용)
 
 import React, { useState, useEffect, useRef } from 'react';
 import {
@@ -15,10 +12,10 @@ import {
   Alert,
   Dimensions,
   RefreshControl,
+  SafeAreaView,
   TextInput,
   Keyboard,
 } from 'react-native';
-import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -54,7 +51,7 @@ const DESIGN_MOCK = [
     otherUserImageUrl: 'https://via.placeholder.com/96x96.png?text=MJ',
     unReadCount: 3,
      lastMessage: '제주도 가신다구요',                    // [작업필요] 서버 제공 시 사용
-     lastMessageTime: '2025-10-14T09:12:00', // [수정] 필드명 변경 및 LocalDateTime 형식으로 맞춤
+     lastMessageCreatedAt: '2025-10-14T09:12:00+09:00', // [작업필요]
   },
   {
     roomId: 'mock-2',
@@ -62,7 +59,7 @@ const DESIGN_MOCK = [
     otherUserImageUrl: 'https://via.placeholder.com/96x96.png?text=JE',
     unReadCount: 12,
      lastMessage: '캄보디아 가신다구요',
-     lastMessageTime: '2025-10-13T15:30:00', // [수정] 필드명 변경 및 LocalDateTime 형식으로 맞춤
+     lastMessageCreatedAt: '2025-10-13T15:30:00+09:00',
   },
 ];
 
