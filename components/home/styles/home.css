@@ -1,0 +1,833 @@
+/* Frame 1707485655 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+
+position: absolute;
+width: 335px;
+height: 155px;
+left: 20px;
+top: 244px;
+
+filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.06));
+border-radius: 16px;
+
+
+/* Frame 1707485652 */
+
+box-sizing: border-box;
+
+width: 167px;
+height: 155px;
+
+background: #FFFFFF;
+border-right: 1px solid #F1F1F5;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1707485654 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+position: absolute;
+width: 110px;
+height: 39px;
+left: 24px;
+top: 92px;
+
+
+
+/* AI 플랜 제작 */
+
+width: 110px;
+height: 20px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 140%;
+/* identical to box height, or 20px */
+display: flex;
+align-items: flex-end;
+letter-spacing: -0.025em;
+
+color: #111111;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* 여행계획을 세워볼까요? */
+
+width: 110px;
+height: 17px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 140%;
+/* identical to box height, or 17px */
+display: flex;
+align-items: flex-end;
+letter-spacing: -0.025em;
+
+color: #767676;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1707485653 */
+
+position: absolute;
+width: 44px;
+height: 44px;
+left: 24px;
+top: 24px;
+
+background: #E9CDFF;
+border-radius: 100px;
+
+
+/* Group 9 */
+
+position: absolute;
+width: 20px;
+height: 16px;
+left: calc(50% - 20px/2);
+top: calc(50% - 16px/2);
+
+
+
+/* Vector 758 */
+
+position: absolute;
+width: 14px;
+height: 16px;
+left: 15px;
+top: 14px;
+
+border: 2px solid #533E92;
+border-radius: 100px;
+
+
+/* Ellipse 513 */
+
+position: absolute;
+width: 6px;
+height: 6px;
+left: 12px;
+top: 14px;
+
+border: 2px solid #533E92;
+
+
+/* Ellipse 514 */
+
+position: absolute;
+width: 6px;
+height: 6px;
+left: 26px;
+top: 24px;
+
+border: 2px solid #533E92;
+
+
+/* Frame 1707485653 */
+
+width: 168px;
+height: 155px;
+
+background: #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1707485654 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+position: absolute;
+width: 110px;
+height: 39px;
+left: 24px;
+top: 92px;
+
+
+
+/* 동행자 찾기 */
+
+width: 110px;
+height: 20px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 140%;
+/* identical to box height, or 20px */
+display: flex;
+align-items: flex-end;
+letter-spacing: -0.025em;
+
+color: #111111;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* 동행자를 찾아볼까요? */
+
+width: 110px;
+height: 17px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 140%;
+/* identical to box height, or 17px */
+display: flex;
+align-items: flex-end;
+letter-spacing: -0.025em;
+
+color: #767676;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1707485653 */
+
+position: absolute;
+width: 44px;
+height: 44px;
+left: 24px;
+top: 24px;
+
+background: #FFF1A8;
+border-radius: 100px;
+
+
+/* Group 1707481265 */
+
+position: absolute;
+width: 18px;
+height: 18px;
+left: calc(50% - 18px/2);
+top: calc(50% - 18px/2);
+
+
+
+/* Ellipse 515 */
+
+position: absolute;
+left: 40.91%;
+right: 40.91%;
+top: 29.55%;
+bottom: 52.27%;
+
+border: 2px solid #B28500;
+
+
+/* Ellipse 516 */
+
+position: absolute;
+left: 29.55%;
+right: 29.55%;
+top: 56.82%;
+bottom: 29.55%;
+
+border: 2px solid #B28500;
+
+
+/* Frame 1707485646 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+position: absolute;
+width: 375px;
+height: 100px;
+left: 0px;
+top: 0px;
+
+
+
+/* 스테이터스바 */
+
+width: 375px;
+height: 44px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Group 3 */
+
+position: absolute;
+width: 339.33px;
+height: 20px;
+left: 18px;
+top: 12px;
+
+
+
+/* Right Side */
+
+position: absolute;
+width: 66.66px;
+height: 11.34px;
+left: 290.67px;
+top: 16.33px;
+
+
+
+/* Battery */
+
+position: absolute;
+left: 88.8%;
+right: 4.71%;
+top: 37.13%;
+bottom: 37.12%;
+
+
+
+/* Rectangle */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 22px;
+height: 11.33px;
+right: 20px;
+top: 16.34px;
+
+mix-blend-mode: normal;
+opacity: 0.35;
+border: 1px solid #000000;
+border-radius: 2.66667px;
+
+
+/* Combined Shape */
+
+position: absolute;
+width: 1.33px;
+height: 4px;
+right: 17.67px;
+top: 20px;
+
+background: #000000;
+mix-blend-mode: normal;
+opacity: 0.4;
+
+
+/* Rectangle */
+
+position: absolute;
+width: 18px;
+height: 7.33px;
+right: 22px;
+top: 18.34px;
+
+background: #000000;
+border-radius: 1.1px;
+
+
+/* Wifi */
+
+position: absolute;
+width: 15.27px;
+height: 10.97px;
+right: 47.03px;
+top: 16.33px;
+
+background: #000000;
+
+
+/* Mobile Signal */
+
+position: absolute;
+width: 17px;
+height: 10.67px;
+right: 67.33px;
+top: 16.67px;
+
+background: #000000;
+
+
+/* 9:41 */
+
+position: absolute;
+width: 54px;
+height: 20px;
+left: 18px;
+top: 12px;
+
+/* Default/Bold/Subheadline */
+font-family: 'SF Pro Text';
+font-style: normal;
+font-weight: 600;
+font-size: 15px;
+line-height: 20px;
+/* identical to box height, or 133% */
+text-align: center;
+letter-spacing: -0.5px;
+
+color: #000000;
+
+
+
+/* Frame 1707485635 */
+
+width: 375px;
+height: 56px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* moyeo */
+
+position: absolute;
+width: 80px;
+height: 26.75px;
+left: 20px;
+top: 14.67px;
+
+
+
+/* Vector */
+
+position: absolute;
+width: 12.78px;
+height: 16.23px;
+left: calc(50% - 12.78px/2 - 93.89px);
+top: 14.77px;
+
+background: #4F46E5;
+
+
+/* Vector */
+
+position: absolute;
+width: 11.76px;
+height: 16.3px;
+left: calc(50% - 11.76px/2 - 107.42px);
+top: 14.83px;
+
+background: #4F46E5;
+
+
+/* Vector */
+
+position: absolute;
+width: 21.51px;
+height: 26.68px;
+left: calc(50% - 21.51px/2 - 123.96px);
+top: 14.74px;
+
+background: #4F46E5;
+
+
+/* Vector */
+
+position: absolute;
+width: 12.78px;
+height: 16.23px;
+left: calc(50% - 12.78px/2 - 136.55px);
+top: 14.77px;
+
+background: #4F46E5;
+
+
+/* Vector */
+
+position: absolute;
+width: 23.49px;
+height: 16.17px;
+left: calc(50% - 23.49px/2 - 155.76px);
+top: 14.67px;
+
+background: #4F46E5;
+
+
+/* Frame 30 */
+
+position: absolute;
+width: 40px;
+height: 40px;
+right: 20px;
+top: calc(50% - 40px/2);
+
+background: url(image.png), #C4C4C4;
+border-radius: 55.5556px;
+
+
+/* Frame 1707485651 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+position: absolute;
+width: 173px;
+height: 96px;
+left: 20px;
+top: 132px;
+
+
+
+/* 마디아님 좋은 하루 보내세요 */
+
+width: 173px;
+height: 68px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 24px;
+line-height: 140%;
+/* or 34px */
+display: flex;
+align-items: flex-end;
+letter-spacing: -0.025em;
+
+color: #141414;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* 오늘은 어디로 떠나고 싶으세요? */
+
+width: 173px;
+height: 20px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 140%;
+/* identical to box height, or 20px */
+display: flex;
+align-items: flex-end;
+letter-spacing: -0.025em;
+
+color: #767676;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1707485660 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+position: absolute;
+width: 335px;
+height: 238px;
+left: 20px;
+top: 431px;
+
+
+
+/* Frame 1707485656 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4px;
+
+width: 173px;
+height: 52px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* 다가오는 여행 */
+
+width: 173px;
+height: 28px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 140%;
+/* identical to box height, or 28px */
+display: flex;
+align-items: flex-end;
+letter-spacing: -0.025em;
+
+color: #141414;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* 곧 떠날 여행 플랜을 만드세요 */
+
+width: 173px;
+height: 20px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 140%;
+/* identical to box height, or 20px */
+display: flex;
+align-items: flex-end;
+letter-spacing: -0.025em;
+
+color: #767676;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1707485659 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 32px 0px;
+gap: 20px;
+
+width: 335px;
+height: 170px;
+
+background: #FFFFFF;
+border: 1px dashed #D3D3DE;
+border-radius: 12px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1707485657 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4px;
+
+width: 335px;
+height: 46px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* 아직 여행 플랜이 없어요 */
+
+width: 335px;
+height: 22px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 140%;
+/* or 22px */
+display: flex;
+align-items: flex-end;
+text-align: center;
+letter-spacing: -0.025em;
+
+color: #141414;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* 함께 여행계획을 세우러 가볼까요? */
+
+width: 335px;
+height: 20px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 140%;
+/* identical to box height, or 20px */
+display: flex;
+align-items: flex-end;
+text-align: center;
+letter-spacing: -0.025em;
+
+color: #767676;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1707485648 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px 16px 10px 12px;
+gap: 4px;
+
+width: 141px;
+height: 40px;
+
+background: #4F46E5;
+border-radius: 12px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1707485658 */
+
+width: 20px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Icon */
+
+position: absolute;
+width: 12px;
+height: 12px;
+left: 4px;
+top: 4px;
+
+border: 1.5px solid #FFFFFF;
+
+
+/* 여행 플랜 만들기 */
+
+width: 89px;
+height: 20px;
+
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 140%;
+/* identical to box height, or 20px */
+display: flex;
+align-items: center;
+letter-spacing: -0.025em;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;

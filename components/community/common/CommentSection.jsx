@@ -161,10 +161,11 @@ export default function CommentSection({ postId, myNickname = '', comments: prop
       }
       setInput('');
       await fetchComments();
+      // [댓글 등록/수정 후 하단 자동 스크롤 + 포커스]
       setTimeout(() => {
         flatListRef.current?.scrollToEnd({ animated: true });
         inputRef.current?.focus();
-      }, 220);
+      }, 200);
     } catch (e) {
       alert('댓글 등록/수정 실패');
     }
@@ -198,14 +199,14 @@ export default function CommentSection({ postId, myNickname = '', comments: prop
     setEditId(id);
     setEditContent(content);
     setTimeout(() => {
-      const idx = comments.findIndex(c => c.id === id);
-      if (idx >= 0 && flatListRef.current) {
-        flatListRef.current.scrollToIndex({
-          index: idx,
-          animated: true,
-          viewPosition: 0.6  // 0.5: 중앙, 0.6~0.7: 하단 부근
-        });
-      }
+    const idx = comments.findIndex(c => c.id === id);
+    if (idx >= 0 && flatListRef.current) {
+      flatListRef.current.scrollToIndex({
+        index: idx,
+        animated: true,
+        viewPosition: 0.6
+      });
+    }  // 수정 버튼 누를시 포커싱 + 키보드 오픈.
       editInputRefs.current[id]?.focus && editInputRefs.current[id].focus();
     }, 400);
   };
@@ -347,7 +348,7 @@ export default function CommentSection({ postId, myNickname = '', comments: prop
           index,
         })}
         contentContainerStyle={{
-          paddingBottom: vScale(100),
+          paddingBottom: vScale(10),
           paddingTop: vScale(8),
         }}
         ListEmptyComponent={
@@ -355,7 +356,10 @@ export default function CommentSection({ postId, myNickname = '', comments: prop
             <Text style={styles.emptyText}>아직 작성된 댓글이 없어요</Text>
           </View>
         }
-        keyboardShouldPersistTaps="always"
+        // [포커싱 및 키보드 문제 해결용 옵션 추가]
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+        removeClippedSubviews={false} // ← 포커싱 시 키보드 자동 닫힘 방지
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -394,15 +398,14 @@ export default function CommentSection({ postId, myNickname = '', comments: prop
             textAlignVertical="center"
             returnKeyType="default"
             onFocus={() => {
-              if (comments.length > 0 && flatListRef.current?.scrollToIndex) {
-                setTimeout(() => {
-                  flatListRef.current.scrollToIndex({
-                    index: comments.length - 1,
-                    animated: true,
-                    viewPosition: 0.6
-                  });
-                }, 200);
-              }
+              setTimeout(() => {
+                if (flatListRef.current && typeof flatListRef.current.scrollToEnd === 'function') {
+                  flatListRef.current.scrollToEnd({ animated: true });
+                  console.log('Scrolled to end');
+                } else {
+                  console.warn('scrollToEnd method not found on flatListRef: 해당 모듈 확인바람.');
+                }
+              }, 100);
             }}
           />
           <TouchableOpacity
